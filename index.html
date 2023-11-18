@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Screen</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #36D1DC, #5B86E5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* To prevent background gradient overflow */
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* Added for positioning the spinner */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .login-container:hover {
+            transform: scale(1.02); /* Add a slight scale effect on hover */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4caf50;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 35%;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Added styles for the loading spinner */
+        .loader {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #4caf50;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            display: none;
+        }
+
+        /* Animation for the loading spinner */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Added styles for the message element */
+        .message {
+            margin-top: 10px;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2 style="text-align: center; color: #333;">Login</h2>
+        <form id="loginForm">
+            <label for="username">Username or Email Address:</label>
+            <input type="text" id="username" name="username" required>
+    
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+    
+            <button type="button" onclick="callApi()">Login</button>
+            <div class="loader" id="loader"></div>
+            <div class="message" id="message"></div>
+        </form>
+    </div>
+
+<script>
+    function callApi() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var button = document.getElementById("loader");
+        button.style.display = "inline-block";
+
+        // Construct your API endpoint
+        var apiEndpoint = "https://hrm-api.logomish.com/shajiLogin";
+
+        // Example of making a simple API call using fetch
+        fetch(apiEndpoint, {
+            method: 'POST', // or 'GET' or other HTTP methods
+            headers: {
+                'Content-Type': 'application/json',
+                // Add any other headers your API requires
+            },
+            body: JSON.stringify({
+                email: username,
+                password: password
+                // Add any other data your API requires
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide the loader
+            button.style.display = "none";
+
+            // Handle the API response here
+            console.log(data);
+
+            // Display success or error message
+          
+        })
+        .catch(error => {
+            // Hide the loader
+            button.style.display = "none";
+
+            // Handle errors here
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+</body>
+</html>
